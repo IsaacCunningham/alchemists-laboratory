@@ -370,3 +370,12 @@ main{ position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding
 ::-webkit-scrollbar-track{ background: var(--ink); }
 ::-webkit-scrollbar-thumb{ background: var(--ink-line); border-radius: 6px; }
 ::-webkit-scrollbar-thumb:hover{ background: var(--brass-dim); }
+
+
+/* ---------- ingredient images ---------- */
+.card-art{ width:72px; height:72px; flex:none; }
+.card-img{ width:100%; height:100%; object-fit:contain; display:block; }
+.detail-sigil{ width:96px; height:96px; margin: 0 auto 10px; }
+.detail-sigil svg{ width:100%; height:100%; }
+.thumb-sm{ width:32px; height:32px; object-fit:contain; flex:none; display:block; }
+.p-main, .r-main{ display:flex; align-items:center; gap:10px; min-width:0; }

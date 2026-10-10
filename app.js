@@ -235,6 +235,13 @@ let GLOBAL_MAX_ABS = 1;
   GLOBAL_MAX_ABS = m;
 })();
 
+// Returns an <img> for an ingredient if it has an image, otherwise ''.
+// size is the folder to load from (96 or 256); cls styles it.
+function ingImg(item, size, cls){
+  if(!item || !item.image) return '';
+  return `<img class="${cls}" src="images/ingredients/${size}/${encodeURIComponent(item.image)}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()">`;
+}
+
 function sigilSVG(stats, {size=64, stroke='#c79a4b', fill='rgba(199,154,75,0.18)', showAxes=true, axisColor='#34304a'} = {}){
   const n = 8;
   const cx = 50, cy = 50, rMax = 42;
@@ -332,7 +339,7 @@ ingSearchInput.addEventListener('input', ()=>{
   const matches = INGREDIENTS.filter(i=>i.name.toLowerCase().includes(q)).slice(0,25);
   ingPickerResults.innerHTML = matches.map(i=>`
     <div class="picker-item" data-name="${escapeHtml(i.name)}">
-      <span class="p-name">${escapeHtml(i.name)}</span>
+      <span class="p-main">${ingImg(i, 96, 'thumb-sm')}<span class="p-name">${escapeHtml(i.name)}</span></span>
       <span class="p-rarity">${i.rarity}</span>
     </div>`).join('') || `<div class="picker-item"><span class="p-name">No matches</span></div>`;
 });
@@ -358,7 +365,7 @@ function renderRecipeList(){
   }
   el.innerHTML = brewState.recipe.map(({item,qty})=>`
     <div class="recipe-row" data-name="${escapeHtml(item.name)}">
-      <span class="r-name">${escapeHtml(item.name)}</span>
+      <span class="r-main">${ingImg(item, 96, 'thumb-sm')}<span class="r-name">${escapeHtml(item.name)}</span></span>
       <span class="r-qty">
         <button class="qty-btn" data-action="dec">−</button>
         <span>${qty}</span>
@@ -566,11 +573,14 @@ function cardHTML(item, kind){
           <h4>${escapeHtml(item.name)}</h4>
           <div class="card-sub">${rarityChip(item.rarity)}${item.value ? ' · ' + escapeHtml(item.value) : ''}</div>
         </div>
-        <div class="card-sigil">${sigilSVG(item.stats, {stroke: kind==='ingredient' ? '#6fae94' : '#9b7fce'})}</div>
+        ${kind==='ingredient' && item.image
+          ? `<div class="card-art">${ingImg(item, 256, 'card-img')}</div>`
+          : `<div class="card-sigil">${sigilSVG(item.stats, {stroke: kind==='ingredient' ? '#6fae94' : '#9b7fce'})}</div>`}
       </div>
       ${desc ? `<p class="card-desc">${escapeHtml(desc)}</p>` : ''}
       ${kind==='potion' && item.consumption ? `<p class="card-desc" style="margin-top:4px;"><em>${escapeHtml(item.consumption)}</em></p>` : ''}
       <div class="card-detail">
+        ${kind==='ingredient' && item.image ? `<div class="detail-sigil">${sigilSVG(item.stats, {size:96, stroke:'#6fae94'})}</div>` : ''}
         ${statTable(item.stats)}
       </div>
     </div>`;
