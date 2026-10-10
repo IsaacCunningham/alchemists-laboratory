@@ -239,7 +239,7 @@ let GLOBAL_MAX_ABS = 1;
 // size is the folder to load from (96 or 256); cls styles it.
 function ingImg(item, size, cls){
   if(!item || !item.image) return '';
-  return `<img class="${cls}" src="images/ingredients/${size}/${encodeURIComponent(item.image)}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()">`;
+  return `<img class="${cls}" src="images/ingredients/${size}/${encodeURIComponent(item.image)}_${size}.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()">`;
 }
 
 function sigilSVG(stats, {size=64, stroke='#c79a4b', fill='rgba(199,154,75,0.18)', showAxes=true, axisColor='#34304a'} = {}){
